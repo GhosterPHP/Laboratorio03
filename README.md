@@ -1,53 +1,59 @@
-# Sistema de Gestión de Ventas - Tienda Electrónica
+# Sistema de Gestión de Ventas (Windows Forms)
 
-Aplicación de escritorio desarrollada en .NET Windows Forms para la gestión de inventario, ventas y reportes de una tienda de productos electrónicos, aplicando desarrollo por capas, el ORM RepoDb y el patrón Repositorio Genérico.
+Aplicación de escritorio desarrollada en .NET Windows Forms para la administración de inventario y reportes de una tienda de productos electrónicos, conectada a SQL Server Express mediante el ORM **RepoDb** y el patrón **Repositorio Genérico**.
 
-Características Principales
+---
 
-Autenticación Segura: Inicio de sesión (FrmLogin) contra la base de datos utilizando cifrado SHA-256 para la validación de contraseñas.
+## Tecnologías Utilizadas
 
-Persistencia con RepoDb: Implementación de IRepository<T> y GenericRepository<T> para operaciones CRUD, además de consultas especializadas con mapeo de modelos.
+* **Lenguaje / Framework:** C# / .NET (Windows Forms)
+* **Base de Datos:** SQL Server Express (`GestionVentas`)
+* **ORM:** RepoDb (`RepoDb.SqlServer`)
+* **Seguridad:** Cifrado criptográfico SHA-256 (`System.Security.Cryptography`)
 
-Interfaz y Flujo Modal: Formulario principal (FrmPrincipal) con panel de navegación lateral y formulario hijo modal (FrmProductoModal) abierto mediante ShowDialog() para el alta y edición de productos.
+---
 
-Módulo de Reportes (FrmReportes):
+## Módulos Implementados
 
-Productos Vendidos: Resumen de cantidades vendidas y montos acumulados.
+* **Inicio de Sesión (Login):** Validación de credenciales contra la tabla `Empleados` comparando el hash SHA-256 de la contraseña.
+* **Persistencia con RepoDb:** Implementación de interfaz e implementación genérica (`IRepository<T>` y `GenericRepository<T>`) para operaciones CRUD.
+* **Formulario Principal y Modal:** Panel lateral de navegación en `FrmPrincipal` y formulario hijo modal (`FrmProductoModal`) invocado con `ShowDialog()` para el registro y edición de productos.
+* **Módulo de Reportes:** Visualización de historial de productos vendidos (cantidades y montos acumulados) y consulta de stock individual o general.
+* **Semáforo de Stock Crítico (Bonus):** Resaltado visual automático en el `DataGridView` (amarillo para stock menor o igual a 5 unidades, rojo para productos agotados con stock en 0).
 
-Stock de Inventario: Consulta general del catálogo y filtro por producto específico.
+---
 
-Bonus - Semáforo de Stock Crítico: Alerta visual automática en las tablas (DataGridView) que resalta productos agotados (stock = 0 en rojo) y con stock crítico (stock <= 5 en amarillo).
+## Estructura del Proyecto
 
-Tecnologías Utilizadas
-
-Lenguaje y Framework: C# / .NET Windows Forms
-
-Base de Datos: SQL Server Express (GestionVentas)
-
-ORM: RepoDb (RepoDb.SqlServer)
-
-Estructura del Proyecto
-
+```text
 Laboratorio3/
-├── Data/       # Configuración de conexión, IRepository<T>, GenericRepository<T> y consultas
-├── Forms/      # FrmLogin, FrmPrincipal, FrmProductoModal y FrmReportes
-├── Models/     # Clases de entidades mapeadas a SQL Server y DTOs
-├── Utils/      # Utilidad de cifrado SHA-256 (SecurityHelper)
-└── Program.cs  # Inicialización de RepoDb y punto de entrada
+├── Data/
+│   └── Repositorios.cs        # Cadena de conexión, IRepository<T>, GenericRepository<T> y consultas
+├── Forms/
+│   ├── FrmLogin.cs            # Autenticación SHA-256
+│   ├── FrmPrincipal.cs        # Menú principal y catálogo con semáforo de stock
+│   ├── FrmProductoModal.cs    # Formulario modal CRUD de productos (ShowDialog)
+│   └── FrmReportes.cs         # Reportes de ventas acumuladas y filtro de stock
+├── Models/
+│   └── Modelos.cs             # Entidades mapeadas con atributos de RepoDb
+├── Utils/
+│   └── SecurityHelper.cs      # Generador de hash SHA-256
+├── Database/
+│   └── script.sql             # Script de creación y datos de prueba
+└── Program.cs                 # Inicialización de RepoDb y punto de entrada
+```
 
+---
 
-Configuración y Ejecución
+## Configuración y Ejecución
 
-Base de datos: Ejecuta el script SQL de la base de datos GestionVentas en tu instancia de SQL Server.
+1. Ejecutar el script SQL de la carpeta `Database/` en SQL Server Management Studio (SSMS) para crear la base de datos `GestionVentas`.
+2. Verificar la cadena de conexión en `Data/Repositorios.cs` (configurada por defecto para `MSI\SQLEXPRESS`).
+3. Restaurar los paquetes NuGet (`RepoDb.SqlServer`) y ejecutar el proyecto desde Visual Studio.
 
-Cadena de conexión: Verifica o ajusta el nombre de tu servidor en Data/Repositorios.cs (DbConfig.ConnectionString), configurado por defecto para MSI\SQLEXPRESS.
+### Credenciales de Prueba
 
-Dependencias: Abre la solución en Visual Studio y restaura el paquete NuGet RepoDb.SqlServer.
-
-Ejecutar: Presiona F5 para compilar e iniciar la aplicación.
-
-Credenciales de Prueba
-
-Usuario: admin
-
-Contraseña: admin123
+| Campo | Valor |
+| :--- | :--- |
+| **Usuario** | `admin` |
+| **Contraseña** | `admin123` |
