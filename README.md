@@ -1,4 +1,4 @@
-#Sistema de Gestión de Ventas - Tienda Electrónica
+# Sistema de Gestión de Ventas - Tienda Electrónica
 
 Aplicación de escritorio desarrollada en .NET Windows Forms para la gestión de inventario, ventas y reportes de una tienda de productos electrónicos, aplicando desarrollo por capas, el ORM RepoDb y el patrón Repositorio Genérico.
 
